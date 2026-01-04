@@ -1,0 +1,23 @@
+.canvas-container {
+  display: grid;
+  place-content: center;
+  grid-area: c;
+}
+canvas {
+  background-color: white;
+  border: 1px solid lightgray;
+}
+
+.editor-container {
+  display: grid;
+  place-content: center;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(1fr, 1fr));
+  grid-template-areas: "c a";
+}
+
+
+.actions {
+  grid-area: a;
+  border: 1px solid white;
+}
