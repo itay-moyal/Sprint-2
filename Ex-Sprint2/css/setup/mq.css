@@ -1,0 +1,16 @@
+/* @media (max-width: 720px) {
+  .image-container {
+    grid-template-columns: repeat(2, minmax(100px, 1fr))
+  }
+
+  .image-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+} */
+
+
+@media (min-width: 720px){
+    
+}
