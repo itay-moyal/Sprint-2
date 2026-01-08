@@ -3,22 +3,22 @@
 var gImgs = [
   { id: 1, url: "imgs-square/1.jpg", keywords: ["funny", "cat"] },
   { id: 2, url: "imgs-square/2.jpg", keywords: ["funny", "cat"] },
-  { id: 3, url: "imgs-square/3.jpg", keywords: ["funny", "cat"] },
-  { id: 4, url: "imgs-square/4.jpg", keywords: ["funny", "cat"] },
+  { id: 3, url: "imgs-square/3.jpg", keywords: ["funny"] },
+  { id: 4, url: "imgs-square/4.jpg", keywords: ["funny" ] },
   { id: 5, url: "imgs-square/5.jpg", keywords: ["funny", "cat"] },
   { id: 6, url: "imgs-square/6.jpg", keywords: ["funny", "cat"] },
-  { id: 7, url: "imgs-square/7.jpg", keywords: ["funny", "cat"] },
+  { id: 7, url: "imgs-square/7.jpg", keywords: ["funny" ] },
   { id: 8, url: "imgs-square/8.jpg", keywords: ["funny", "cat"] },
-  { id: 9, url: "imgs-square/9.jpg", keywords: ["funny", "cat"] },
-  { id: 10, url: "imgs-square/10.jpg", keywords: ["funny", "cat"] },
-  { id: 11, url: "imgs-square/11.jpg", keywords: ["funny", "cat"] },
+  { id: 9, url: "imgs-square/9.jpg", keywords: [ "cat"] },
+  { id: 10, url: "imgs-square/10.jpg", keywords: ["funny", "cat" , "baby"] },
+  { id: 11, url: "imgs-square/11.jpg", keywords: ["cat", "baby"] },
   { id: 12, url: "imgs-square/12.jpg", keywords: ["funny", "cat"] },
   { id: 13, url: "imgs-square/13.jpg", keywords: ["funny", "cat"] },
-  { id: 14, url: "imgs-square/14.jpg", keywords: ["funny", "cat"] },
+  { id: 14, url: "imgs-square/14.jpg", keywords: ["money", "cat"] },
   { id: 15, url: "imgs-square/15.jpg", keywords: ["funny", "cat"] },
-  { id: 16, url: "imgs-square/16.jpg", keywords: ["funny", "cat"] },
-  { id: 17, url: "imgs-square/17.jpg", keywords: ["funny", "cat"] },
-  { id: 18, url: "imgs-square/18.jpg", keywords: ["funny", "cat"] },
+  { id: 16, url: "imgs-square/16.jpg", keywords: ["money", "cat"] },
+  { id: 17, url: "imgs-square/17.jpg", keywords: ["money", "cat"] },
+  { id: 18, url: "imgs-square/18.jpg", keywords: ["cat"] },
 ]
 
 var gMeme = {
@@ -26,7 +26,7 @@ var gMeme = {
   selectedLineIdx: 0,
   lines: [
     {
-      txt: "I sometimes eat Falafel",
+      txt: getRandomText(),
       size: 20,
       color: "red",
       x: 0,
@@ -34,7 +34,7 @@ var gMeme = {
       align: "center",
     },
     {
-      txt: "I sometimes don't",
+      txt: getRandomText(),
       size: 20,
       color: "black",
       x: 0,
@@ -60,7 +60,7 @@ function setImg(imgId) {
 
 function addLine() {
   gMeme.lines.push({
-    txt: "New Text",
+    txt: getRandomText(),
     size: 20,
     color: "black",
     x: gElCanvas.width / 2,
@@ -138,10 +138,10 @@ function deleteLine() {
   }
 }
 
-function setRandomMeme(imgId) {
+function setRandomMeme(randImgId) {
   gMeme.lines = [
     {
-      txt: "New Text",
+      txt: getRandomText(),
       size: 20,
       color: "white",
       x: 0,
@@ -149,7 +149,7 @@ function setRandomMeme(imgId) {
       align: "center",
     },
     {
-      txt: "New Text Two",
+      txt: getRandomText(),
       size: 20,
       color: "white",
       x: 0,
@@ -158,4 +158,41 @@ function setRandomMeme(imgId) {
     },
   ]
   gMeme.selectedLineIdx = 0
+}
+
+function resetMemeLines() {
+  ;(gMeme.lines = [
+    {
+      txt: getRandomText(),
+      size: 20,
+      color: "red",
+      x: 0,
+      y: 0,
+      align: "center",
+    },
+    {
+      txt: getRandomText(),
+      size: 20,
+      color: "black",
+      x: 0,
+      y: 0,
+      align: "center",
+    },
+  ]),
+    (gMeme.selectedLineIdx = 0)
+}
+
+function getRandomText() {
+  const texts = [
+    "I sometimes eat Falafel",
+    "I sometimes don't",
+    "Life is fun",
+    "Coding is fun",
+    "Monday vibes",
+    "Just chill",
+    "Keep smiling",
+    "Coffee first",
+  ]
+  const idx = getRandomIntInclusive(0, texts.length - 1)
+  return texts[idx]
 }

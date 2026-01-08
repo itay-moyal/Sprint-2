@@ -2,13 +2,14 @@
 
 var gCtx
 var gElCanvas
-var gIsMouseDown = false
+var gFilterBy
 
 function onInit() {
   gElCanvas = document.querySelector("canvas")
   gCtx = gElCanvas.getContext("2d")
   gElCanvas.addEventListener("click", onCanvasClick)
   renderGallery()
+  gFilterBy = ''
 }
 
 //renders an image on the canvas and a line of text on top
@@ -112,6 +113,7 @@ function getMemeImg(imgId) {
 }
 
 function onImgSelect(imgId) {
+  resetMemeLines()
   setImg(imgId)
 
   var gallery = document.querySelector(".gallery-container")
@@ -119,7 +121,7 @@ function onImgSelect(imgId) {
   var galleryActions = document.querySelector(".gallery-actions")
   gallery.classList.add("hidden")
   galleryActions.classList.add("hidden")
-  
+
   editor.classList.remove("hidden")
 
   renderMeme()
@@ -181,41 +183,68 @@ function onDeleteLine() {
 
 function onRandomMeme() {
   const randImgId = getRandomIntInclusive(1, 18)
-  setRandomMeme()
+  setRandomMeme(randImgId)
   onImgSelect(randImgId)
 }
 
-// function onSavePic() {
-//   const data = gElCanvas.toDataURL()
-//   addPic(data)
-//   renderPics()
-// }
+function onNavClick(section) {
+  const gallery = document.querySelector(".gallery-container")
+  const galleryActions = document.querySelector(".gallery-actions")
+  const savedMemes = document.querySelector(".saved-memes-container")
+  const editor = document.querySelector(".editor-container")
 
-// function renderPics() {
-//   const pics = getPics()
-//   const strHTMLs = pics.map((pic) => {
-//     return `
-//         <article>
-//             <button onclick="onRemovePic('${pic.id}')">X</button>
-//             <img src="${pic.data}" onclick="onSelectPic('${pic.id}')">
-//         </article>
-//         `
-//   })
+  gallery.classList.add("hidden")
+  galleryActions.classList.add("hidden")
+  savedMemes.classList.add("hidden")
+  editor.classList.add("hidden")
 
-//   const elPics = document.querySelector(".pic-list")
-//   elPics.innerHTML = strHTMLs.join("")
-// }
+  if (section === "gallery") {
+    gallery.classList.remove("hidden")
+    galleryActions.classList.remove("hidden")
+  }
+  if (section === "savedMemes") {
+    savedMemes.classList.remove("hidden")
+    renderSavedMemes()
+  }
+  onClearFilter()
+}
 
-// function onRemovePic(picId) {
-//   removePic(picId)
-//   renderPics()
-// }
 
-// function onSelectPic(picId) {
-//   const pic = getPicById(picId)
-//   const img = new Image()
-//   img.src = pic.data
-//   img.onload = () => {
-//     renderImg(img)
-//   }
-// }
+function onUploadImg(ev) {
+  ev.preventDefault()
+  const canvasData = gElCanvas.toDataURL('image/jpeg')
+
+  // After a succesful upload, allow the user to share on Facebook
+  function onSuccess(uploadedImgUrl) {
+    const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+    console.log('encodedUploadedImgUrl:', encodedUploadedImgUrl)
+    document.querySelector('.share-container').innerHTML = `
+            <button class="btn-facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}')">
+                Share on Facebook  
+            </button>`
+  }
+
+  uploadImg(canvasData, onSuccess)
+}
+
+async function uploadImg(imgData, onSuccess) {
+  const CLOUD_NAME = 'webify'
+  const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+
+  const formData = new FormData()
+  formData.append('file', imgData)
+  formData.append('upload_preset', 'webify')
+
+  try {
+    const res = await fetch(UPLOAD_URL, {
+      method: 'POST',
+      body: formData
+    })
+    const data = await res.json()
+    console.log('Cloudinary response:', data)
+    onSuccess(data.secure_url)
+
+  } catch (err) {
+    console.log(err)
+  }
+}

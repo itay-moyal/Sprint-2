@@ -11,7 +11,7 @@
 
   .actions {
     gap: 10px;
-    justify-content: center;
+    /* justify-content: center; */
   }
 
 .gallery-container {

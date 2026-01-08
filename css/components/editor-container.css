@@ -48,4 +48,28 @@ canvas {
   button:hover {
     background-color: var(--primary-blue);
   }
+
+  .color{
+  border-radius: 8px;
+  transition: all 0.5s ease;
+}
+.color:hover{
+  cursor: pointer;
+  background-color: var(--primary-blue);
+}
+.share-container{
+  flex-direction: column;
+  text-align: center;
+  color: white;
+}
+.social{
+  display: flex;
+  align-items: center;
+  gap: 4px
+}
+
+.download{
+text-decoration: none;
+color: black;
+}
 }

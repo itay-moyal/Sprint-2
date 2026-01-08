@@ -17,15 +17,30 @@
         <h1 class="main-logo">Meme Generator</h1>
         <nav class="main-nav flex">
           <ul class="clean-list flex">
-            <li><a href="/">Home</a></li>
-            <li><a href="/">About</a></li>
-            <li><a href="/">Memes</a></li>
+            <li><a href="#" onclick="onNavClick('gallery')">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#" onclick="onNavClick('savedMemes')">Memes</a></li>
           </ul>
         </nav>
       </div>
     </header>
+
     <section class="gallery-actions">
       <button class="flexible" onclick="onRandomMeme()">I'm Flexible</button>
+      <div class="filter-container">
+        <input
+          list="keywords"
+          class="filter-input"
+          placeholder="Search"
+          oninput="onFilter()"
+        />
+        <datalist id="keywords">
+          <option value="funny"></option>
+          <option value="cat"></option>
+          <option value="baby"></option>
+        </datalist>
+        <button onclick="onClearFilter()">Clear Filter</button>
+      </div>
     </section>
     <section class="gallery-container"></section>
     <section class="editor-container hidden">
@@ -75,7 +90,7 @@
             <i class="fa-solid fa-arrow-down"></i>
           </button>
         </div>
-
+        
         <button onclick="onDeleteLine()">
           <i class="fa-solid fa-trash"></i>
         </button>
@@ -85,20 +100,35 @@
           value="#FFFFFF"
           oninput="onSetColor(this.value)"
         />
-        <a
+        <div class="social">
+        <button>
+          <a
           href="#"
           class="download"
           onclick="onDownloadImg(this)"
           download="file-name"
           >Download</a
-        >
+          >
+        </button>
+        <button class="save" onclick="onSaveMeme()">
+          <i class="fa-solid fa-floppy-disk"></i> Save
+        </button>
+        <form method="POST" enctype="multipart/form-data" onsubmit="onUploadImg(event)">
+      <input name="img" id="imgData" type="hidden" />
+      <button class="btn" type="submit">Upload to Cloud</button>
+    </form>
+    <div class="share-container flex align-center"></div>
       </div>
+        </div>
+
     </section>
+    <section class="saved-memes-container hidden">aaaa</section>
 
     <script src="js/util-service.js"></script>
-    <script src="js/pic-service.js"></script>
+    <script src="js/stroage-service.js"></script>
     <script src="js/meme-controller.js"></script>
     <script src="js/meme-service.js"></script>
+    <script src="js/storage-controller.js"></script>
     <script src="js/gallery-controller.js"></script>
   </body>
 </html>
