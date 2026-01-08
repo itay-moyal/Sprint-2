@@ -1,5 +1,6 @@
 .main-nav {
   color: white;
+  flex-direction: column;
   > ul {
     gap: 60px;
   }

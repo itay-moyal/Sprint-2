@@ -1,6 +1,7 @@
 .main-header {
-  height: 130px;
-  background-color: rgb(32, 142, 216);
+  height: 8vw;
+  background-color: var(--primary-blue);
   margin-bottom: 2rem;
 
 }
+

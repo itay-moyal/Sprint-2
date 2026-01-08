@@ -1,4 +1,6 @@
 /* Basics */
+@import url(./setup/typography.css);
+@import url(./setup/vars.css);
 
 /* Components */
 @import url(./components/main-header.css);
@@ -6,7 +8,6 @@
 @import url(./components/main-logo.css);
 @import url(./components/gallery-container.css);
 @import url(./components/editor-container.css);
-@import url(./components/footer.css);
 
 @import url(./basics/helpers.css);
 @import url(./basics/base.css);

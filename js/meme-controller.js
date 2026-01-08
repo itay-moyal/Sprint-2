@@ -7,12 +7,15 @@ var gIsMouseDown = false
 function onInit() {
   gElCanvas = document.querySelector("canvas")
   gCtx = gElCanvas.getContext("2d")
+  gElCanvas.addEventListener("click", onCanvasClick)
   renderGallery()
 }
+
 //renders an image on the canvas and a line of text on top
 
 function renderMeme() {
-  const memeImg = getMemeImg(gMeme.selectedImgId)
+  const meme = getMeme()
+  const memeImg = getMemeImg(meme.selectedImgId)
   if (!memeImg) return
 
   const img = new Image()
@@ -30,43 +33,77 @@ function renderImg(img) {
 }
 
 function renderTxt() {
-  var height = gElCanvas.height / 2
-  var width = gElCanvas.width / 2
+  const meme = getMeme()
+  const centerX = gElCanvas.width / 2
+  const centerY = gElCanvas.height / 2
 
-  gMeme.lines.forEach((memeLine, idx) => {
-    gCtx.font = `${memeLine.size}px Arial`
-    gCtx.fillStyle = memeLine.color
-    gCtx.fillText(memeLine.txt, width, height + idx * 30)
-    
-    
+  meme.lines.forEach((line, idx) => {
+    gCtx.font = `${line.size}px Arial`
+    gCtx.textAlign = line.align || "center"
+    gCtx.fillStyle = line.color
+    line.x = centerX
+    if (!line.y) {
+      if (idx === 0) line.y = line.size + 10 // top
+      else if (idx === 1) line.y = gElCanvas.height - 10 // bottom
+      else line.y = centerY
+    }
+
+    gCtx.fillText(line.txt, line.x, line.y)
+
+    line.width = gCtx.measureText(line.txt).width
+    line.height = line.size
+
+    if (idx === gMeme.selectedLineIdx) {
+      drawTextFrame(line)
+    }
   })
 }
 
-function onSwitchLines(){
-  if (gMeme.selectedLineIdx === gMeme.lines.length - 1) {
-    gMeme.selectedLineIdx = 0
-  }else{
-    gMeme.selectedLineIdx++
-  }
-  
+function drawTextFrame(line) {
+  const padding = 10
+  let rectX = line.x
+  if (line.align === "center") rectX = rectX - line.width / 2
+  if (line.align === "right") rectX = rectX - line.width
+
+  const rectY = line.y - line.height
+
+  gCtx.fillStyle = "rgba(255,255,255,0.3)"
+  gCtx.strokeStyle = "white"
+
+  gCtx.fillRect(
+    rectX - padding,
+    rectY - padding,
+    line.width + padding * 2,
+    line.height + padding * 2
+  )
+  gCtx.strokeRect(
+    rectX - padding,
+    rectY - padding,
+    line.width + padding * 2,
+    line.height + padding * 2
+  )
+}
+
+function onSwitchLines() {
+  switchLine()
   renderInputTxt()
   renderMeme()
 }
 
 function onAddLine() {
-  gMeme.lines.push({
-    txt: "New Text",
-    size: 20,
-    color: "black",
-  })
-
-  gMeme.selectedLineIdx = gMeme.lines.length - 1
+  addLine()
   renderInputTxt()
   renderMeme()
 }
 
-function renderInputTxt(){
-  var textInput = document.querySelector('.user-text')
+function renderInputTxt() {
+  const textInput = document.querySelector(".user-text")
+  const meme = getMeme()
+
+  if (meme.lines.length === 0) {
+    textInput.value = ""
+    return
+  }
   textInput.value = gMeme.lines[gMeme.selectedLineIdx].txt
 }
 
@@ -79,7 +116,10 @@ function onImgSelect(imgId) {
 
   var gallery = document.querySelector(".gallery-container")
   var editor = document.querySelector(".editor-container")
+  var galleryActions = document.querySelector(".gallery-actions")
   gallery.classList.add("hidden")
+  galleryActions.classList.add("hidden")
+  
   editor.classList.remove("hidden")
 
   renderMeme()
@@ -92,24 +132,57 @@ function onSetLineTxt(txt) {
 
 function onDownloadImg(elLink) {
   var imgContent = gElCanvas.toDataURL()
-  console.log("imgContent:", imgContent)
   elLink.href = imgContent
   // Set a name for the downloaded file
   elLink.download = "my-img"
 }
 
 function onSetColor(color) {
-  const memeLine = gMeme.lines[gMeme.selectedLineIdx]
-  memeLine.color = color
+  setColor(color)
   renderMeme()
 }
 
-function changeValue(value) {
-  const memeLine = gMeme.lines[gMeme.selectedLineIdx]
-  const fontsize = value + memeLine.size
-  memeLine.size = fontsize
-  gCtx.font = `${memeLine.size}px Arial`
+function onChangeValue(value) {
+  changeValue(value)
   renderMeme()
+}
+
+function onCanvasClick(ev) {
+  const meme = getMeme()
+  const pos = getEvPos(ev)
+
+  const clickedLineIdx = meme.lines.findIndex((line) =>
+    isTextClicked(pos, line)
+  )
+
+  if (clickedLineIdx === -1) return
+
+  gMeme.selectedLineIdx = clickedLineIdx
+  renderInputTxt()
+  renderMeme()
+}
+
+function onSetAlign(align) {
+  const meme = getMeme()
+  const line = meme.lines[meme.selectedLineIdx]
+  line.align = align
+  renderMeme()
+}
+
+function onMoveLine(value) {
+  moveLine(value)
+  renderMeme()
+}
+
+function onDeleteLine() {
+  deleteLine()
+  renderMeme()
+}
+
+function onRandomMeme() {
+  const randImgId = getRandomIntInclusive(1, 18)
+  setRandomMeme()
+  onImgSelect(randImgId)
 }
 
 // function onSavePic() {

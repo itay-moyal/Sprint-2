@@ -12,48 +12,89 @@
     ></script>
   </head>
   <body class="main-layout" onload="onInit()">
-    <header class="main-header full main-layout">
-      <div class="header-container flex space-between align-center">
+    <header class="main-header main-layout full">
+      <div class="header-container flex align-center space-between">
         <h1 class="main-logo">Meme Generator</h1>
+        <nav class="main-nav flex">
+          <ul class="clean-list flex">
+            <li><a href="/">Home</a></li>
+            <li><a href="/">About</a></li>
+            <li><a href="/">Memes</a></li>
+          </ul>
+        </nav>
       </div>
-      <nav class="main-nav">
-        <ul class="clean-list flex">
-          <li><a href="/">Home</a></li>
-          <li><a href="/">About</a></li>
-          <li><a href="/">Memes</a></li>
-        </ul>
-      </nav>
     </header>
+    <section class="gallery-actions">
+      <button class="flexible" onclick="onRandomMeme()">I'm Flexible</button>
+    </section>
     <section class="gallery-container"></section>
     <section class="editor-container hidden">
       <div class="canvas-container">
         <canvas width="400px" height="400px"></canvas>
       </div>
-      <div class="actions">
+      <div class="actions flex align-center">
         <input
           class="user-text"
           type="text"
           oninput="onSetLineTxt(this.value)"
         />
-        <a href="#" onclick="onDownloadImg(this)" download="file-name"
-          >Download</a
-        >
+        <div class="text-section">
+          <button class="add-line action-item" onclick="onAddLine()">
+            <i class="fa-regular fa-keyboard"></i>
+          </button>
+
+          <button class="switch-lines action-item" onclick="onSwitchLines()">
+            <i class="fa-solid fa-repeat"></i>
+          </button>
+        </div>
         <div class="font-size-container">
-          <button class="increase" onclick="changeValue(+1)">
+          <button class="increase action-item" onclick="onChangeValue(+1)">
             <i class="fa-solid fa-plus"></i>
           </button>
-          <button class="decrease" onclick="changeValue(-1)">
+          <button class="decrease action-item" onclick="onChangeValue(-1)">
             <i class="fa-solid fa-minus"></i>
           </button>
         </div>
-        <input type="color" value="#FFFFFF" oninput="onSetColor(this.value)" />
-        <button class="add-line" onclick="onAddLine()">
-          <i class="fa-regular fa-keyboard"></i>
-        </button>
+        <div class="align-content">
+          <button onclick="onSetAlign('left')">
+            <i class="fa-solid fa-align-left"></i>
+          </button>
+          <button onclick="onSetAlign('center')">
+            <i class="fa-solid fa-align-center"></i>
+          </button>
+          <button onclick="onSetAlign('right')">
+            <i class="fa-solid fa-align-right"></i>
+          </button>
+        </div>
+        <div class="move-content">
+          <button onclick="onMoveLine(-10)">
+            <i class="fa-solid fa-arrow-up"></i>
+          </button>
 
-        <button class="switch-lines" onclick="onSwitchLines()"><i class="fa-solid fa-repeat"></i></button>
+          <button onclick="onMoveLine(10)">
+            <i class="fa-solid fa-arrow-down"></i>
+          </button>
+        </div>
+
+        <button onclick="onDeleteLine()">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+        <input
+          type="color"
+          class="color action-item"
+          value="#FFFFFF"
+          oninput="onSetColor(this.value)"
+        />
+        <a
+          href="#"
+          class="download"
+          onclick="onDownloadImg(this)"
+          download="file-name"
+          >Download</a
+        >
       </div>
     </section>
+
     <script src="js/util-service.js"></script>
     <script src="js/pic-service.js"></script>
     <script src="js/meme-controller.js"></script>

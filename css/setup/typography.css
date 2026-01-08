@@ -1,0 +1,22 @@
+@font-face {
+    font-family: lato-reg;
+    /* set name */
+    src: url(/fonts/Lato-Regular.ttf);
+    /* url of the font */
+}
+
+/* Inconsolata */
+@font-face {
+    font-family: lato-bold;
+    /* set name */
+    src: url(/fonts/Lato-Bold.ttf);
+    /* url of the font */
+}
+
+/* Ubuntu */
+@font-face {
+    font-family: eurofurence;
+    /* set name */
+    src: url(/fonts/Eurofurence-Regular.ttf);
+    /* url of the font */
+}

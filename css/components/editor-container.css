@@ -4,20 +4,48 @@
   grid-area: c;
 }
 canvas {
-  background-color: white;
-  border: 1px solid lightgray;
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
 }
 
 .editor-container {
   display: grid;
-  place-content: center;
-  gap: 20px;
-  grid-template-columns: repeat(2, minmax(1fr, 1fr));
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas: "c a";
 }
 
-
 .actions {
-  grid-area: a;
-  border: 1px solid white;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+
+  .action-item {
+    height: 25px;
+    width: 50px;
+  }
+
+  .user-text {
+    flex: 1 1 200px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    font-size: 1rem;
+    border-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+  button:hover {
+    background-color: var(--primary-blue);
+  }
 }
